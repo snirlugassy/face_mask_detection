@@ -10,7 +10,7 @@ from model import MaskDetectionModel
 from dataset import MaskImageDataset
 from utils import calc_accuracy
 
-BATCH_SIZE = 256
+BATCH_SIZE = 100
 EPOCHS = 50
 LEARNING_RATE = 0.01
 MOMENTUM = 0.7
