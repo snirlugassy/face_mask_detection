@@ -52,7 +52,7 @@ if __name__ == '__main__':
             optimizer.step()
 
             if i % 20 == 0:
-                test_accuracy = calc_accuracy(model, test_loader, limit=100)
+                test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
                 print(f'Epoch: [{epoch+1}/{EPOCHS}], Step: {i+1}, Loss: {L}, Test Acc.: {test_accuracy}')
 
         torch.save(model.state_dict(), 'model.state')
