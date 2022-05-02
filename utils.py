@@ -13,6 +13,6 @@ def calc_accuracy(classifier, loader, device, limit=None):
         total += len(labels)
         correct += (predicted == labels).sum()
 
-        if total >= limit:
+        if limit is not None and total >= limit:
             break
     return correct / total

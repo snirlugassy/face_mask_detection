@@ -10,10 +10,10 @@ from model import MaskDetectionModel
 from dataset import MaskImageDataset
 from utils import calc_accuracy
 
-BATCH_SIZE = 56
-EPOCHS = 30
-LEARNING_RATE = 0.1
-MOMENTUM = 0.9
+BATCH_SIZE = 512
+EPOCHS = 50
+LEARNING_RATE = 0.01
+MOMENTUM = 0.7
 
 if __name__ == '__main__':
     data_path = sys.argv[-1]
@@ -56,4 +56,7 @@ if __name__ == '__main__':
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
             break
 
-        # torch.save(model.state_dict(), 'model.state')
+        print('Test accuracy = ', calc_accuracy(model, test_loader, device))
+
+        print('Saving state')
+        torch.save(model.state_dict(), 'model.state')
