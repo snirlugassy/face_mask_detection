@@ -12,6 +12,8 @@ INPUT_DIM = (224, 224)
 
 
 if __name__ == '__main__':
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('Using device =', device)
 
     # With resizing:
     # face_mask_dataset = MaskImageDataset('./data/train', transform=mask_image_transform)
@@ -23,6 +25,7 @@ if __name__ == '__main__':
 
     print('Initalizing model')
     model = MaskDetectionModel()
+    model.to(device)
 
     loss = torch.nn.NLLLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -30,6 +33,9 @@ if __name__ == '__main__':
     for epoch in range(EPOCHS):
         print('Starting epoch', epoch+1)
         for i, (images, labels) in enumerate(train_loader):
+            images = images.to(device)
+            labels = labels.to(device)
+
             # Forward pass
             y_prob = model(images)
             L = loss(y_prob, labels)
