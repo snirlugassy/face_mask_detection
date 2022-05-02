@@ -12,8 +12,8 @@ from utils import calc_accuracy
 
 BATCH_SIZE = 56
 EPOCHS = 30
-LEARNING_RATE = 1e-3
-MOMENTUM = 0.7
+LEARNING_RATE = 0.1
+MOMENTUM = 0.9
 
 if __name__ == '__main__':
     data_path = sys.argv[-1]

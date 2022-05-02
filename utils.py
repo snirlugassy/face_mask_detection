@@ -3,6 +3,9 @@ import torch
 def calc_accuracy(classifier, loader, device, limit=None):
     correct = 0
     total = 0
+    
+    classifier.to(device)
+
     for i, (images, labels) in enumerate(loader):
         images = images.to(device)
         labels = labels.to(device)
