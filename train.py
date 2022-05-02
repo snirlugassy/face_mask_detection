@@ -52,8 +52,7 @@ if __name__ == '__main__':
             optimizer.step()
 
             if i % 20 == 0:
-                loss, current = L.item(), i * len(labels)
                 test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
-                print(f'Loss: {loss:>7f}  [{current:>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
+                print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
 
         torch.save(model.state_dict(), 'model.state')
