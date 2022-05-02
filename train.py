@@ -12,8 +12,8 @@ from utils import calc_accuracy
 
 BATCH_SIZE = 56
 EPOCHS = 20
-LEARNING_RATE = 1e-4
-
+LEARNING_RATE = 1e-3
+MOMENTUM = 0.7
 
 if __name__ == '__main__':
     data_path = sys.argv[-1]
@@ -24,6 +24,7 @@ if __name__ == '__main__':
     print('Loading datasets')
     train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform)
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    train_size = len(train_dataset)
 
     test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
@@ -33,13 +34,11 @@ if __name__ == '__main__':
     model.to(device)
 
     loss = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
     
     for epoch in range(EPOCHS):
-        print('Starting epoch', epoch+1)
+        print(f"Epoch {epoch+1}/{EPOCHS}\n---------------------------")
         for i, (images, labels) in enumerate(train_loader):
-            optimizer.zero_grad()
-
             images = images.to(device)
             labels = labels.to(device)
 
@@ -48,11 +47,13 @@ if __name__ == '__main__':
             L = loss(y_prob, labels)
 
             # Backpropagation
+            optimizer.zero_grad()
             L.backward()
             optimizer.step()
 
             if i % 20 == 0:
+                loss, current = loss.item(), i * len(labels)
                 test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
-                print(f'Epoch: [{epoch+1}/{EPOCHS}], Step: {i+1}, Loss: {L}, Test Acc.: {test_accuracy}')
+                print(f'Loss: {loss:>7f}  [{current:>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
 
         torch.save(model.state_dict(), 'model.state')
