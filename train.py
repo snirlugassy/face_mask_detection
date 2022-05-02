@@ -1,4 +1,5 @@
 import os
+import gc
 import argparse
 
 import torch
@@ -18,6 +19,9 @@ OPTIMIZERS = {
 }
 
 if __name__ == '__main__':
+    gc.collect()
+    torch.cuda.empty_cache()
+    
     argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
     argparser.add_argument('--data-path', type=str, required=True, dest='data_path')
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
