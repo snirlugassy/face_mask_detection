@@ -32,12 +32,6 @@ if __name__ == '__main__':
     model = MaskDetectionModel()
     model.to(device)
 
-    print('Calculating initial accuracy')
-    t0 = time()
-    acc = 
-    print('accuracy = ', acc)
-    print('took', time() - t0, 'seconds to calc acc')
-
     loss = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
     
