@@ -11,7 +11,7 @@ from dataset import MaskImageDataset
 from utils import calc_accuracy
 
 BATCH_SIZE = 56
-EPOCHS = 20
+EPOCHS = 30
 LEARNING_RATE = 1e-3
 MOMENTUM = 0.7
 
@@ -54,5 +54,6 @@ if __name__ == '__main__':
             if i % 20 == 0:
                 test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
+            break
 
         torch.save(model.state_dict(), 'model.state')
