@@ -8,11 +8,12 @@ from torchvision.transforms import RandomVerticalFlip
 from torchvision.transforms import RandomHorizontalFlip
 from torchvision.transforms import RandomGrayscale
 from torchvision.transforms import ColorJitter
-
+from torchvision.transforms import Grayscale
 
 # Transform with resize to (256, 256)
 mask_image_train_transform = Compose([
     Resize((128,128), InterpolationMode.BILINEAR),
+    Grayscale(),
     # RandomCrop((128,128)),
     ToTensor(),
     RandomHorizontalFlip(),

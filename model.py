@@ -5,7 +5,7 @@ class MaskDetectionModel(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, padding='same'),
+            nn.Conv2d(in_channels=1, out_channels=64, kernel_size=3, padding='same'),
             nn.ReLU(),
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, padding='same'),
             nn.ReLU(),
@@ -13,6 +13,7 @@ class MaskDetectionModel(nn.Module):
         )
 
         self.conv2 = nn.Sequential(
+            nn.BatchNorm2d(64),
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding='same'),
             nn.ReLU(),
             nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, padding='same'),
