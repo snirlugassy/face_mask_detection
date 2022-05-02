@@ -23,7 +23,7 @@ if __name__ == '__main__':
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
     argparser.add_argument('--test-limit-size', type=int, dest='test_limit_size')
     argparser.add_argument('--epochs', type=int, dest='epochs')
-    argparser.add_argument('--optimizer', type=str, dest='optimizer')
+    argparser.add_argument('--optimizer', type=str, dest='optimizer', choices=OPTIMIZERS.keys())
     argparser.add_argument('--lr', type=float, dest='lr')
     argparser.add_argument('--print-steps', type=int, dest='print_steps')
 
