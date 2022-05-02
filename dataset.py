@@ -1,4 +1,5 @@
 import os
+import torch
 from torch.utils.data.dataset import Dataset
 from torchvision.io import read_image
 
@@ -16,4 +17,4 @@ class MaskImageDataset(Dataset):
         label = int(os.path.splitext(self.image_files[idx])[0].split('_')[1])
         if self.transform:
             image = self.transform(image)
-        return image, label
+        return image.float(), label
