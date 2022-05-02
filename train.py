@@ -4,7 +4,7 @@ import argparse
 import torch
 from torch.utils.data.dataloader import DataLoader
 
-from transform import mask_image_train_transform
+from transform import mask_image_train_transform2
 from transform import mask_image_test_transform
 from model import MaskDetectionModel
 from dataset import MaskImageDataset
@@ -15,16 +15,20 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
     argparser.add_argument('--data-path', type=str, required=True, dest='data_path')
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
+    argparser.add_argument('--test-limit-size', type=int, dest='test_limit_size')
     argparser.add_argument('--epochs', type=int, dest='epochs')
     argparser.add_argument('--lr', type=float, dest='lr')
     argparser.add_argument('--momentum', type=float, dest='momentum')
+    argparser.add_argument('--print-steps', type=int, dest='print_steps')
 
     args = argparser.parse_args()
 
     BATCH_SIZE = args.batch_size or 100
+    TEST_LIMIT_SIZE = args.test_batch_size
     EPOCHS = args.epochs or 50
     LEARNING_RATE = args.lr or 0.01
     MOMENTUM = args.momentum or 0.7
+    PRINT_STEPS = args.print_steps or 20
 
     data_path = args.data_path
 
@@ -38,7 +42,7 @@ if __name__ == '__main__':
     print('====================')
 
     print('-> Loading datasets')
-    train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform)
+    train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform2)
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     train_size = len(train_dataset)
 
@@ -68,11 +72,11 @@ if __name__ == '__main__':
             L.backward()
             optimizer.step()
 
-            if i % 20 == 0:
+            if i % PRINT_STEPS == 0:
                 # test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
 
-        print('Test accuracy = ', calc_accuracy(model, test_loader, device))
+        print('Test accuracy = ', calc_accuracy(model, test_loader, device, limit=TEST_LIMIT_SIZE))
 
         print('-> Saving state')
         torch.save(model.state_dict(), 'model.state')

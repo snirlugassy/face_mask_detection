@@ -21,6 +21,12 @@ mask_image_train_transform = Compose([
     ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
 ])
 
+mask_image_train_transform2 = Compose([
+    Resize((256,256), InterpolationMode.BILINEAR),
+    RandomCrop((224,224)),
+    ToTensor()
+])
+
 mask_image_test_transform = Compose([
     Resize((224,224), InterpolationMode.BILINEAR),
     ToTensor()
