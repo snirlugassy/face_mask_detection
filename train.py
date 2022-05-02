@@ -4,7 +4,7 @@ import argparse
 import torch
 from torch.utils.data.dataloader import DataLoader
 
-from transform import mask_image_train_transform2
+from transform import mask_image_train_transform
 from transform import mask_image_test_transform
 from model import MaskDetectionModel
 from dataset import MaskImageDataset
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     print('====================')
 
     print('-> Loading datasets')
-    train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform2)
+    train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform)
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     train_size = len(train_dataset)
 
@@ -83,7 +83,6 @@ if __name__ == '__main__':
             optimizer.step()
 
             if i % PRINT_STEPS == 0:
-                # test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
 
         print('Test accuracy = ', calc_accuracy(model, test_loader, device, limit=TEST_LIMIT_SIZE))

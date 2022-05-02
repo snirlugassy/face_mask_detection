@@ -10,7 +10,7 @@ def calc_accuracy(classifier, loader, device, limit=None):
             labels = labels.to(device)
 
             outputs = classifier(images)
-            predicted = torch.argmax(outputs, 1)
+            predicted = torch.softmax(outputs, dim=1).argmax(dim=1)
             total += len(labels)
             correct += (predicted == labels).sum()
 

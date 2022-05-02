@@ -12,31 +12,16 @@ from torchvision.transforms import ColorJitter
 
 # Transform with resize to (256, 256)
 mask_image_train_transform = Compose([
-    Resize((256,256), InterpolationMode.BILINEAR),
-    RandomCrop((224,224)),
+    Resize((128,128), InterpolationMode.BILINEAR),
+    # RandomCrop((128,128)),
     ToTensor(),
     RandomHorizontalFlip(),
-    RandomVerticalFlip(),
+    # RandomVerticalFlip(),
     RandomGrayscale(),
-    ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
-])
-
-mask_image_train_transform2 = Compose([
-    Resize((256,256), InterpolationMode.BILINEAR),
-    RandomCrop((224,224)),
-    ToTensor()
+    # ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
 ])
 
 mask_image_test_transform = Compose([
     Resize((224,224), InterpolationMode.BILINEAR),
     ToTensor()
-])
-
-# Transform without resize
-mask_256_image_transform = Compose([
-    RandomCrop((224,224)),
-    RandomHorizontalFlip(),
-    RandomVerticalFlip(),
-    RandomGrayscale(),
-    ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
 ])
