@@ -18,11 +18,8 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device =', device)
 
-    # With resizing:
-    # face_mask_dataset = MaskImageDataset('./data/train', transform=mask_image_transform)
-
     print('Loading dataset')
-    face_mask_dataset = MaskImageDataset(data_path, transform=mask_256_image_transform)
+    face_mask_dataset = MaskImageDataset(data_path, transform=mask_image_transform)
     train_loader = DataLoader(face_mask_dataset, batch_size=BATCH_SIZE, shuffle=True)
     N = len(train_loader)
 
