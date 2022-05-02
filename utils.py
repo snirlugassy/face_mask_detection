@@ -4,15 +4,16 @@ def calc_accuracy(classifier, loader, device, limit=None):
     correct = 0
     total = 0
     
-    for i, (images, labels) in enumerate(loader):
-        images = images.to(device)
-        labels = labels.to(device)
+    with torch.no_grad():
+        for i, (images, labels) in enumerate(loader):
+            images = images.to(device)
+            labels = labels.to(device)
 
-        outputs = classifier(images)
-        predicted = torch.argmax(outputs, 1)
-        total += len(labels)
-        correct += (predicted == labels).sum()
+            outputs = classifier(images)
+            predicted = torch.argmax(outputs, 1)
+            total += len(labels)
+            correct += (predicted == labels).sum()
 
-        if limit is not None and total >= limit:
-            break
+            if limit is not None and total >= limit:
+                break
     return correct / total

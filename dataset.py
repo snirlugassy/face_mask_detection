@@ -15,8 +15,9 @@ class MaskImageDataset(Dataset):
         return len(self.image_files)
 
     def __getitem__(self, idx):
-        image = self.pil2tensor(Image.open(self.image_files[idx]))
+        # image = self.pil2tensor(Image.open(self.image_files[idx]))
+        image = Image.open(self.image_files[idx])
         label = int(os.path.splitext(self.image_files[idx])[0].split('_')[1])
         if self.transform:
             image = self.transform(image)
-        return image.float(), label
+        return image, label

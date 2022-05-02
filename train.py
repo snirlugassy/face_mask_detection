@@ -29,12 +29,12 @@ if __name__ == '__main__':
     data_path = args.data_path
 
     print('====== TRAIN =======')
-    print('batch-size:\t', BATCH_SIZE)
-    print('epochs:\t', EPOCHS)
-    print('l-rate:\t', LEARNING_RATE)
-    print('momentum:\t', MOMENTUM)
+    print('batch-size:', BATCH_SIZE)
+    print('epochs:', EPOCHS)
+    print('l-rate:', LEARNING_RATE)
+    print('momentum:', MOMENTUM)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('device:\t', device)
+    print('device:', device)
     print('====================')
 
     print('-> Loading datasets')
@@ -55,6 +55,8 @@ if __name__ == '__main__':
     for epoch in range(EPOCHS):
         print(f"Epoch {epoch+1}/{EPOCHS}\n---------------------------")
         for i, (images, labels) in enumerate(train_loader):
+            optimizer.zero_grad()
+
             images = images.to(device)
             labels = labels.to(device)
 
@@ -63,7 +65,6 @@ if __name__ == '__main__':
             L = loss(y_prob, labels)
 
             # Backpropagation
-            optimizer.zero_grad()
             L.backward()
             optimizer.step()
 
