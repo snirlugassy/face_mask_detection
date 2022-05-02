@@ -10,6 +10,12 @@ from model import MaskDetectionModel
 from dataset import MaskImageDataset
 from utils import calc_accuracy
 
+OPTIMIZERS = {
+    'adam': torch.optim.Adam,
+    'adadelta': torch.optim.Adadelta,
+    'sgd': torch.optim.SGD,
+    'adagrad': torch.optim.Adagrad
+}
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
@@ -17,8 +23,8 @@ if __name__ == '__main__':
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
     argparser.add_argument('--test-limit-size', type=int, dest='test_limit_size')
     argparser.add_argument('--epochs', type=int, dest='epochs')
+    argparser.add_argument('--optimizer', type=str, dest='optimizer')
     argparser.add_argument('--lr', type=float, dest='lr')
-    argparser.add_argument('--momentum', type=float, dest='momentum')
     argparser.add_argument('--print-steps', type=int, dest='print_steps')
 
     args = argparser.parse_args()
@@ -27,16 +33,20 @@ if __name__ == '__main__':
     TEST_LIMIT_SIZE = args.test_limit_size
     EPOCHS = args.epochs or 50
     LEARNING_RATE = args.lr or 0.01
-    MOMENTUM = args.momentum or 0.7
     PRINT_STEPS = args.print_steps or 20
+    OPTIMIZER = args.optimizer or 'adam'
+
+    if OPTIMIZER not in OPTIMIZERS:
+        OPTIMIZER = 'adam'
 
     data_path = args.data_path
 
     print('====== TRAIN =======')
+    print('optimizer:', OPTIMIZER)
     print('batch-size:', BATCH_SIZE)
     print('epochs:', EPOCHS)
     print('l-rate:', LEARNING_RATE)
-    print('momentum:', MOMENTUM)
+    print('test-limit:', TEST_LIMIT_SIZE)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('device:', device)
     print('====================')
@@ -54,8 +64,8 @@ if __name__ == '__main__':
     model.to(device)
 
     loss = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
-    
+    optimizer = OPTIMIZERS[OPTIMIZER](model.parameters, lr=LEARNING_RATE)
+
     for epoch in range(EPOCHS):
         print(f"Epoch {epoch+1}/{EPOCHS}\n---------------------------")
         for i, (images, labels) in enumerate(train_loader):
