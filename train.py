@@ -1,6 +1,6 @@
 import os
-import sys
-from time import time
+import argparse
+
 import torch
 from torch.utils.data.dataloader import DataLoader
 
@@ -10,18 +10,34 @@ from model import MaskDetectionModel
 from dataset import MaskImageDataset
 from utils import calc_accuracy
 
-BATCH_SIZE = 100
-EPOCHS = 50
-LEARNING_RATE = 0.01
-MOMENTUM = 0.7
 
 if __name__ == '__main__':
-    data_path = sys.argv[-1]
+    argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
+    argparser.add_argument('--data-path', type=str, required=True, dest='data_path')
+    argparser.add_argument('--batch-size', type=int, dest='batch_size')
+    argparser.add_argument('--epochs', type=int, dest='epochs')
+    argparser.add_argument('--lr', type=float, dest='lr')
+    argparser.add_argument('--momentum', type=float, dest='momentum')
 
+    args = argparser.parse_args()
+
+    BATCH_SIZE = args.batch_size or 100
+    EPOCHS = args.epochs or 50
+    LEARNING_RATE = args.lr or 0.01
+    MOMENTUM = args.momentum or 0.7
+
+    data_path = args.data_path
+
+    print('====== TRAIN =======')
+    print('batch-size:\t', BATCH_SIZE)
+    print('epochs:\t', EPOCHS)
+    print('l-rate:\t', LEARNING_RATE)
+    print('momentum:\t', MOMENTUM)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('Using device =', device)
+    print('device:\t', device)
+    print('====================')
 
-    print('Loading datasets')
+    print('-> Loading datasets')
     train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform)
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     train_size = len(train_dataset)
@@ -29,7 +45,7 @@ if __name__ == '__main__':
     test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
 
-    print('Initalizing model')
+    print('-> Initalizing model')
     model = MaskDetectionModel()
     model.to(device)
 
@@ -57,5 +73,5 @@ if __name__ == '__main__':
 
         print('Test accuracy = ', calc_accuracy(model, test_loader, device))
 
-        print('Saving state')
+        print('-> Saving state')
         torch.save(model.state_dict(), 'model.state')
