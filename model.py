@@ -57,7 +57,6 @@ class MaskDetectionModel(nn.Module):
             nn.Linear(in_features=4096, out_features=2048),
             nn.ReLU(),
             nn.Linear(in_features=2048, out_features=2),
-            nn.LogSoftmax(dim=1)
         )
 
     def forward(self, x):
