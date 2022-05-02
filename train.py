@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     print('Loading datasets')
     train_dataset = MaskImageDataset(os.path.join(data_path, 'train'), transform=mask_image_train_transform)
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=False)
     train_size = len(train_dataset)
 
     test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
@@ -52,8 +52,8 @@ if __name__ == '__main__':
             optimizer.step()
 
             if i % 20 == 0:
-                test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
-                print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
+                # test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
+                print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
             break
 
-        torch.save(model.state_dict(), 'model.state')
+        # torch.save(model.state_dict(), 'model.state')
