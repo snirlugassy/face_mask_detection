@@ -20,35 +20,35 @@ class MaskDetectionModel(nn.Module):
             nn.MaxPool2d(kernel_size=2)
         )
 
-        self.conv3 = nn.Sequential(
-            nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2)
-        )
+        # self.conv3 = nn.Sequential(
+        #     nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=256, out_channels=256, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=256, out_channels=256, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.MaxPool2d(kernel_size=2)
+        # )
 
-        self.conv4 = nn.Sequential(
-            nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2)
-        )
+        # self.conv4 = nn.Sequential(
+        #     nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.MaxPool2d(kernel_size=2)
+        # )
 
-        self.conv5 = nn.Sequential(
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2)
-        )
+        # self.conv5 = nn.Sequential(
+        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, padding='same'),
+        #     nn.ReLU(),
+        #     nn.MaxPool2d(kernel_size=2)
+        # )
 
         self.fc = nn.Sequential(
             nn.Flatten(),
