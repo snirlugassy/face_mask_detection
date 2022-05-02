@@ -52,7 +52,7 @@ if __name__ == '__main__':
             optimizer.step()
 
             if i % 20 == 0:
-                loss, current = loss.item(), i * len(labels)
+                loss, current = L.item(), i * len(labels)
                 test_accuracy = calc_accuracy(model, test_loader, device, limit=100)
                 print(f'Loss: {loss:>7f}  [{current:>5d}/{train_size:>5d}] | Test Acc.: {test_accuracy}')
 
