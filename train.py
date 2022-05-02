@@ -24,7 +24,7 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
     BATCH_SIZE = args.batch_size or 100
-    TEST_LIMIT_SIZE = args.test_batch_size
+    TEST_LIMIT_SIZE = args.test_limit_size
     EPOCHS = args.epochs or 50
     LEARNING_RATE = args.lr or 0.01
     MOMENTUM = args.momentum or 0.7
