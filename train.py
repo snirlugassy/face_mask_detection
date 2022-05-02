@@ -64,7 +64,7 @@ if __name__ == '__main__':
     model.to(device)
 
     loss = torch.nn.CrossEntropyLoss()
-    optimizer = OPTIMIZERS[OPTIMIZER](model.parameters, lr=LEARNING_RATE)
+    optimizer = OPTIMIZERS[OPTIMIZER](model.parameters(), lr=LEARNING_RATE)
 
     for epoch in range(EPOCHS):
         print(f"Epoch {epoch+1}/{EPOCHS}\n---------------------------")
