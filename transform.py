@@ -23,6 +23,7 @@ mask_image_train_transform = Compose([
 ])
 
 mask_image_test_transform = Compose([
-    Resize((224,224), InterpolationMode.BILINEAR),
+    Resize((128,128), InterpolationMode.BILINEAR),
+    Grayscale(),
     ToTensor()
 ])
