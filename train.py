@@ -6,10 +6,9 @@ from transform import mask_image_transform, mask_256_image_transform
 from model import MaskDetectionModel
 from dataset import MaskImageDataset
 
-BATCH_SIZE = 10
-EPOCHS = 1
+BATCH_SIZE = 56
+EPOCHS = 20
 LEARNING_RATE = 1e-3
-INPUT_DIM = (224, 224)
 
 
 if __name__ == '__main__':
