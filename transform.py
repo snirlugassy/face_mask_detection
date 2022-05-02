@@ -18,7 +18,6 @@ mask_image_train_transform = Compose([
     ToTensor(),
     RandomHorizontalFlip(),
     # RandomVerticalFlip(),
-    RandomGrayscale(),
     # ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
 ])
 
