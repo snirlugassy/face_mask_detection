@@ -21,7 +21,7 @@ OPTIMIZERS = {
 if __name__ == '__main__':
     gc.collect()
     torch.cuda.empty_cache()
-    
+
     argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
     argparser.add_argument('--data-path', type=str, required=True, dest='data_path')
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
@@ -51,7 +51,9 @@ if __name__ == '__main__':
     print('epochs:', EPOCHS)
     print('l-rate:', LEARNING_RATE)
     print('test-limit:', TEST_LIMIT_SIZE)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
+
     print('device:', device)
     print('====================')
 
