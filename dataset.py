@@ -5,9 +5,11 @@ from torch.utils.data.dataset import Dataset
 from torchvision.transforms import ToTensor
 
 class MaskImageDataset(Dataset):
-    def __init__(self, img_dir, transform=None):
+    def __init__(self, img_dir, transform=None, limit=None):
         self.dir = img_dir
         self.image_files = [os.path.join(img_dir, i) for i in os.listdir(img_dir)]
+        if isinstance(limit, int):
+            self.image_files = self.image_files[:limit]
         self.transform = transform
         self.pil2tensor = ToTensor()
 

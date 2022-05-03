@@ -25,7 +25,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Train mask detection nerual network')
     argparser.add_argument('--data-path', type=str, required=True, dest='data_path')
     argparser.add_argument('--batch-size', type=int, dest='batch_size')
-    argparser.add_argument('--test-limit-size', type=int, dest='test_limit_size')
+    # argparser.add_argument('--test-limit-size', type=int, dest='test_limit_size')
     argparser.add_argument('--epochs', type=int, dest='epochs')
     argparser.add_argument('--optimizer', type=str, dest='optimizer', choices=OPTIMIZERS.keys())
     argparser.add_argument('--lr', type=float, dest='lr')
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
     BATCH_SIZE = args.batch_size or 100
-    TEST_LIMIT_SIZE = args.test_limit_size
+    # TEST_LIMIT_SIZE = args.test_limit_size
     EPOCHS = args.epochs or 50
     LEARNING_RATE = args.lr or 0.01
     PRINT_STEPS = args.print_steps or 20
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     print('batch-size:', BATCH_SIZE)
     print('epochs:', EPOCHS)
     print('l-rate:', LEARNING_RATE)
-    print('test-limit:', TEST_LIMIT_SIZE)
+    # print('test-limit:', TEST_LIMIT_SIZE)
     # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     device = torch.device('cpu')
 
@@ -62,8 +62,8 @@ if __name__ == '__main__':
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     train_size = len(train_dataset)
 
-    test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
-    test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
+    # test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
+    # test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
 
     print('-> Initalizing model')
     model = MaskDetectionModel()
@@ -91,7 +91,7 @@ if __name__ == '__main__':
             if i % PRINT_STEPS == 0:
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
 
-        print('Test accuracy = ', calc_accuracy(model, test_loader, device, limit=TEST_LIMIT_SIZE))
+        print('Train sample accuracy = ', calc_accuracy(model, train_loader, device, limit=100))
 
         print('-> Saving state')
         torch.save(model.state_dict(), 'model.state')
