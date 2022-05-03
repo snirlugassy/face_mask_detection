@@ -51,8 +51,8 @@ if __name__ == '__main__':
     print('epochs:', EPOCHS)
     print('l-rate:', LEARNING_RATE)
     # print('test-limit:', TEST_LIMIT_SIZE)
-    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cpu')
 
     print('device:', device)
     print('====================')
