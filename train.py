@@ -91,7 +91,7 @@ if __name__ == '__main__':
             if i % PRINT_STEPS == 0:
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
 
-        print('Train sample accuracy = ', calc_accuracy(model, train_loader, device, limit=100))
+        print('Train sample accuracy = ', calc_accuracy(train_loader, model, device, limit=100))
 
         print('-> Saving state')
         torch.save(model.state_dict(), 'model.state')
