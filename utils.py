@@ -40,9 +40,12 @@ def calc_confusion_mat(data_loader: DataLoader, model: torch.nn.Module, device):
                 labels = labels[:n]
                 predicted = predicted[:n]
 
-            tp += torch.logical_and(labels==1, predicted==1)
-            fp += torch.logical_and(labels==0, predicted==1)
-            fn += torch.logical_and(labels==1, predicted==0)
-            tn += torch.logical_and(labels==0, predicted==0)
+            try:
+                tp += torch.logical_and(labels==1, predicted==1)
+                fp += torch.logical_and(labels==0, predicted==1)
+                fn += torch.logical_and(labels==1, predicted==0)
+                tn += torch.logical_and(labels==0, predicted==0)
+            except:
+                print(labels.shape, predicted.shape, labels, predicted)
 
     return tp, fp, fn, tn
