@@ -35,13 +35,14 @@ def calc_confusion_mat(data_loader: DataLoader, model: torch.nn.Module, device):
             predicted = torch.softmax(predictions, dim=1).argmax(dim=1)
 
             if len(labels) != len(predicted):
+                print(labels, predicted)
                 n = min(len(labels), len(predicted))
                 labels = labels[:n]
                 predicted = predicted[:n]
 
-            tp += (labels==1).logical_and(predicted==1)
-            fp += (labels==0).logical_and(predicted==1)
-            fn += (labels==1).logical_and(predicted==0)
-            tn += (labels==0).logical_and(predicted==0)
+            tp += torch.logical_and(labels==1, predicted==1)
+            fp += torch.logical_and(labels==0, predicted==1)
+            fn += torch.logical_and(labels==1, predicted==0)
+            tn += torch.logical_and(labels==0, predicted==0)
 
     return tp, fp, fn, tn
