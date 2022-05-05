@@ -1,5 +1,5 @@
 import torch
-from torch import nn
+from torch import dropout, nn
 
 class MaskDetectionModel(nn.Module):
     def __init__(self) -> None:
@@ -13,7 +13,7 @@ class MaskDetectionModel(nn.Module):
         )
 
         self.conv2 = nn.Sequential(
-            nn.BatchNorm2d(32),
+            # nn.BatchNorm2d(32),
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding='same'),
             nn.ReLU(),
             nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, padding='same'),
@@ -22,11 +22,13 @@ class MaskDetectionModel(nn.Module):
         )
 
         self.fc = nn.Sequential(
-            nn.Flatten(),
+            # nn.Flatten(),
             nn.Linear(in_features=64*32*32, out_features=2048),
             nn.ReLU(),
+            nn.Dropout(p=0.5),
             nn.Linear(in_features=2048, out_features=512),
             nn.ReLU(),
+            nn.Dropout(p=0.5),
             nn.Linear(in_features=512, out_features=2),
         )
 
@@ -34,6 +36,9 @@ class MaskDetectionModel(nn.Module):
         # Convolutional
         x = self.conv1(x)
         x = self.conv2(x)
+        
+        # Flatten
+        x = x.view(x.size(0), -1)
 
         # Fully connected
         x = self.fc(x)
