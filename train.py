@@ -62,8 +62,8 @@ if __name__ == '__main__':
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     train_size = len(train_dataset)
 
-    # test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
-    # test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
+    test_dataset = MaskImageDataset(os.path.join(data_path, 'test'), transform=mask_image_test_transform)
+    test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)
 
     print('-> Initalizing model')
     model = MaskDetectionModel()
@@ -91,7 +91,7 @@ if __name__ == '__main__':
             if i % PRINT_STEPS == 0:
                 print(f'Loss: {L.item():>7f}  [{i * len(labels):>5d}/{train_size:>5d}]')
 
-        print('Train sample accuracy = ', calc_accuracy(train_loader, model, device, limit=100))
+        print('Test sample accuracy = ', calc_accuracy(test_loader, model, device, limit=100))
 
         print('-> Saving state')
         torch.save(model.state_dict(), 'model.state')

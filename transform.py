@@ -9,6 +9,10 @@ from torchvision.transforms import RandomHorizontalFlip
 from torchvision.transforms import RandomGrayscale
 from torchvision.transforms import ColorJitter
 from torchvision.transforms import Grayscale
+from torchvision.transforms import Normalize
+
+TRAIN_PIXEL_MEAN = 0.468
+TRAIN_PIXEL_STD = 0.2251
 
 # Transform with resize to (256, 256)
 mask_image_train_transform = Compose([
@@ -16,6 +20,7 @@ mask_image_train_transform = Compose([
     Grayscale(),
     # RandomCrop((128,128)),
     ToTensor(),
+    Normalize(TRAIN_PIXEL_MEAN, TRAIN_PIXEL_STD),
     RandomHorizontalFlip(),
     # RandomVerticalFlip(),
     # ColorJitter(brightness=0.5, hue=0.5, contrast=0.5)
@@ -24,5 +29,6 @@ mask_image_train_transform = Compose([
 mask_image_test_transform = Compose([
     Resize((128,128), InterpolationMode.BILINEAR),
     Grayscale(),
-    ToTensor()
+    ToTensor(),
+    Normalize(TRAIN_PIXEL_MEAN, TRAIN_PIXEL_STD)
 ])
