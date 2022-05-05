@@ -1,7 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
 
-
 def calc_accuracy(data_loader: DataLoader, model: torch.nn.Module, device, limit=None):
     num_correct = 0
     total = 0
@@ -34,18 +33,9 @@ def calc_confusion_mat(data_loader: DataLoader, model: torch.nn.Module, device):
             predictions = model(data)
             predicted = torch.softmax(predictions, dim=1).argmax(dim=1)
 
-            if len(labels) != len(predicted):
-                print(labels, predicted)
-                n = min(len(labels), len(predicted))
-                labels = labels[:n]
-                predicted = predicted[:n]
-
-            try:
-                tp += torch.logical_and(labels==1, predicted==1)
-                fp += torch.logical_and(labels==0, predicted==1)
-                fn += torch.logical_and(labels==1, predicted==0)
-                tn += torch.logical_and(labels==0, predicted==0)
-            except:
-                print(labels.shape, predicted.shape, labels, predicted)
+            tp += int(torch.logical_and(labels==1, predicted==1).sum())
+            fp += int(torch.logical_and(labels==0, predicted==1).sum())
+            fn += int(torch.logical_and(labels==1, predicted==0).sum())
+            tn += int(torch.logical_and(labels==0, predicted==0).sum())
 
     return tp, fp, fn, tn
