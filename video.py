@@ -1,22 +1,32 @@
 import cv2
-import sys
-import pickle
-import time
-import os
-
 from PIL import Image
 import torch
-import pickle
-from torch.utils.data.dataloader import DataLoader
-
 from transform import mask_image_test_transform
-
 from model import MaskDetectionModel
-from dataset import MaskImageDataset
-from utils import calc_accuracy
 
+BLACK = (0,0,0)
+WHITE = (255,255,255)
+GREEN = (0,255,0)
+RED = (0,0,255)
 
 video_capture = cv2.VideoCapture(0)
+ret, frame = video_capture.read()
+h,w,_ = frame.shape
+
+assert w > h
+
+block_size = int(h // 1.5)
+step = int(block_size // 2)
+x_center = int(w // 2)
+y_center = int(h // 2)
+
+rect_top_left = (x_center - step, y_center + step)
+rect_bottom_right = (x_center + step, y_center - step)
+
+print(rect_top_left, rect_bottom_right)
+print('heigh:',h)
+print('weight:',w)
+print('block:', block_size, 'step:', step)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = MaskDetectionModel()
@@ -31,8 +41,9 @@ while True:
 
     # Capture frame-by-frame
     ret, frame = video_capture.read()
-    
-    tensor = mask_image_test_transform(Image.fromarray(frame)).reshape(1,1,128,128)
+
+    rect = frame[y_center-step:y_center+step,x_center-step:x_center+step]
+    tensor = mask_image_test_transform(Image.fromarray(rect)).reshape(1,1,128,128)
     model_output = torch.softmax(model(tensor), dim=1)
     has_mask = int(model_output.argmax(dim=1))
     mask_prob = float(model_output[:,1])
@@ -40,17 +51,17 @@ while True:
     T += 1
     avg_prob -= avg_prob / T
     avg_prob += mask_prob / T
-    # avg_prob = (1/T)*mask_prob + (1-1/T)*avg_prob
 
     if has_mask:
-        text = 'WITH MASK'
-        c = (0,255,0)
+        text = 'VALID MASK'
+        c = GREEN
     else:
-        text = 'NO MASK'
-        c = (0,0,255)
+        text = 'INVALID MASK'
+        c = RED
 
+    cv2.rectangle(frame, rect_top_left, rect_bottom_right, BLACK, 2)
     cv2.putText(frame, text, (20,50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, c, 2)
-    cv2.putText(frame, f'MOVING AVG PROB:{round(avg_prob, 5):.5}', (20,100), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 2)
+    cv2.putText(frame, f'AVG PROB:{round(avg_prob, 5):.5}', (20,100), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255,255,255), 2)
 
     # Display the resulting frame
     cv2.imshow('Video', frame)

@@ -1,5 +1,4 @@
-import torch
-from torch import dropout, nn
+from torch import nn
 
 class MaskDetectionModel(nn.Module):
     def __init__(self) -> None:
